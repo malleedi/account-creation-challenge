@@ -14,12 +14,12 @@ class ApiController < ApplicationController
     user_params = params.permit(:username, :password)
   
     if user_params[:username].blank?
-      render json: { error: "param is missing or the value is empty: username" }, status: :bad_request
+      render json: { error: "Username is missing" }, status: :bad_request
       return
     end
   
     if user_params[:password].blank?
-      render json: { error: "param is missing or the value is empty: password" }, status: :bad_request
+      render json: { error: "Password is missing" }, status: :bad_request
       return
     end
   
@@ -36,7 +36,7 @@ class ApiController < ApplicationController
     end
   
     if user.save
-      render json: { success: true, message: 'success' }, status: :created
+      render json: { success: true, message: 'Account successfully created!' }, status: :created
     else
       render json: { success: false, error: user.errors.full_messages }, status: :unprocessable_entity
     end

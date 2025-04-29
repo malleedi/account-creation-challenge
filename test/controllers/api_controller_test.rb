@@ -8,13 +8,13 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
   test "create_account fails with missing username" do
     post api_create_account_path, params: { password: 'abc123strongpassword' }
     assert_response :bad_request
-    assert_equal "param is missing or the value is empty: username", JSON.parse(response.body)['error']
+    assert_equal "Username is missing", JSON.parse(response.body)['error']
   end
 
   test "create_account fails with missing password" do
     post api_create_account_path, params: { username: 'validusername' }
     assert_response :bad_request
-    assert_equal "param is missing or the value is empty: password", JSON.parse(response.body)['error']
+    assert_equal "Password is missing", JSON.parse(response.body)['error']
   end
 
   test "create_account fails with weak password (zxcvbn score < 2)" do

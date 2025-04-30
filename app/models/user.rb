@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   validates :username, presence: true, length: { minimum: 10, maximum: 50 }
-  validates :password, presence: true, length: { minimum: 12, maximum: 50 }
+  validates :password, presence: true, length: { minimum: 20, maximum: 50 }
   validate :password_must_contain_letter_and_number
 
   def self.validate_username(username)

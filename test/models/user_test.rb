@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   test "should not save user without username" do
-    user = User.new(password: 'abc123abc123abc')
+    user = User.new(password: 'StrongPassword123456')
     assert_not user.save
   end
 
@@ -12,7 +12,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should save user with valid username and password" do
-    user = User.new(username: '1234567890', password: 'abc123abc123abc')
+    user = User.new(username: '1234567890', password: 'StrongPassword123456')
     assert user.save
   end
 
@@ -31,13 +31,13 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "should validate password must contain letter and number" do
-    user = User.new(username: 'validusername', password: 'abcdefghijklmno') # no number
+    user = User.new(username: 'validusername', password: 'abcdefghijklmnopqrstuvwx') # no number
     assert_not user.save, "Password without number should not save"
 
-    user.password = '1234567890123456' # no letter
+    user.password = '123456789012345678901' # no letter
     assert_not user.save, "Password without letter should not save"
 
-    user.password = 'abc123abc123abc' # letter and number
+    user.password = 'StrongPassword123456' # letter and number
     assert user.save, "Password with letter and number should save"
   end
 end

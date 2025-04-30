@@ -21,7 +21,7 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
     post api_create_account_path, params: { username: 'validusername', password: '123' }
     assert_response :unprocessable_entity
     errors = JSON.parse(response.body)['error']
-    assert_includes errors, "Password is too short (minimum is 12 characters)"
+    assert_includes errors, "Password is too short (minimum is 20 characters)"
     assert_includes errors, "Password must include at least one letter and one number"
   end
 
@@ -45,5 +45,19 @@ class ApiControllerTest < ActionDispatch::IntegrationTest
     post api_create_account_path, params: { username: 'validusername', password: 'abc123strongpassword' }
     assert_response :created
     assert_equal true, JSON.parse(response.body)['success']
+  end
+
+  test "create_account fails with username longer than 50 characters" do
+    long_username = 'a' * 51
+    post api_create_account_path, params: { username: long_username, password: 'validpassword1234' }
+    assert_response :unprocessable_entity
+    assert_includes JSON.parse(response.body)['error'], "Username is too long (maximum is 50 characters)"
+  end
+
+  test "create_account fails with password longer than 50 characters" do
+    long_password = 'a' * 51
+    post api_create_account_path, params: { username: 'validusername', password: long_password }
+    assert_response :unprocessable_entity
+    assert_includes JSON.parse(response.body)['error'], "Password is too long (maximum is 50 characters)"
   end
 end

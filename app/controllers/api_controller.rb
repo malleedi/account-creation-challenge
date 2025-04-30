@@ -31,7 +31,7 @@ class ApiController < ApplicationController
     end
   
     if check_password_strength(user.password) < 2
-      render json: { error: "Weak password" }, status: :unprocessable_entity
+      render json: { error: "Password is too weak" }, status: :unprocessable_entity
       return
     end
   

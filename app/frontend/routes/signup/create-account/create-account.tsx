@@ -11,12 +11,14 @@ export function CreateAccount() {
   const [successMessage, setSuccessMessage] = useState('');
   const navigate = useNavigate();
 
+  // Handles form input changes and clears error messages on change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: undefined })); // clear error on change
   };
 
+  // Handles form submission and validates inputs
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setErrors({});
@@ -44,6 +46,7 @@ export function CreateAccount() {
         setSuccessMessage(data.message || 'Account created successfully');
         setTimeout(() => navigate('/signup/account-selection'), 1000);
       } else {
+        // Handle backend errors and set form field-specific errors
         const errorList = Array.isArray(data.error) ? data.error : [data.error];
         const fieldErrors: { username?: string; password?: string } = {};
   
@@ -56,9 +59,9 @@ export function CreateAccount() {
       }
     } catch (err) {
       console.error(err);
-      setErrors({ username: 'Server error', password: 'Server error' });
+      setErrors({ username: 'Server error', password: 'Server error' }); // Generic error handling
     }
-  };  
+  };
 
   return (
     <div className="mx-auto px-6 py-14 max-w-xl">
@@ -77,7 +80,7 @@ export function CreateAccount() {
               value={formData.username}
               onChange={handleChange}
               className={`w-full border-b-2 p-2 outline-none ${
-                errors.username ? 'border-red-500' : 'border-gray-200 focus:border-blue-300'
+                errors.username ? 'border-red-500' : 'border-gray-200 focus:border-blue-300' // UI error validation
               }`}
             />
             {errors.username && (
@@ -93,7 +96,7 @@ export function CreateAccount() {
               value={formData.password}
               onChange={handleChange}
               className={`w-full border-b-2 p-2 outline-none ${
-                errors.password ? 'border-red-500' : 'border-gray-200 focus:border-blue-300'
+                errors.password ? 'border-red-500' : 'border-gray-200 focus:border-blue-300' // UI error validation
               }`}
             />
             {errors.password && (

@@ -6,13 +6,14 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 export function Input({ onChange, label, type = 'text', ...props }: Props) {
   const [value, setValue] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // Save state for password visibility toggle
   const id = label.replace(/ /gm, '_');
   const isPassword = type === 'password';
 
+  // Handle input change
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value);
-    onChange?.(event);
+    onChange?.(event); // Call the passed onChange handler if available
   }
 
   return (
@@ -30,7 +31,7 @@ export function Input({ onChange, label, type = 'text', ...props }: Props) {
         <button
           type="button"
           onClick={() => setShowPassword((prev) => !prev)}
-          className="absolute right-2 top-8 text-[#777586]"
+          className="absolute right-2 top-8 text-[#777586] focus:outline-none"
           aria-label={showPassword ? 'Hide password' : 'Show password'}
         >
           {showPassword ? (

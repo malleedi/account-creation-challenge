@@ -4,6 +4,7 @@ import { CreateAccount } from './create-account';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 
+// Mocking navigate function for testing route changes
 const mockNavigate = jest.fn();
 
 jest.mock('react-router-dom', () => ({
@@ -12,14 +13,14 @@ jest.mock('react-router-dom', () => ({
 }));
 
 beforeEach(() => {
-  jest.spyOn(console, 'error').mockImplementation(() => {});
-  jest.useFakeTimers();
+  jest.spyOn(console, 'error').mockImplementation(() => {}); // Suppress error logs during tests
+  jest.useFakeTimers(); // Mock timers for the success redirect
 });
 
 afterEach(() => {
-  jest.resetAllMocks();
+  jest.resetAllMocks(); // Reset, clear mocks
   jest.clearAllMocks();
-  jest.useRealTimers();
+  jest.useRealTimers(); // Use real timers after tests
 });
 
 describe('CreateAccount Component', () => {
@@ -40,12 +41,12 @@ describe('CreateAccount Component', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /create account/i }));
 
-    // Wait for the success message to appear
+    // Wait for the success message to appear after the form submission
     await waitFor(() => {
       expect(screen.getByText(/account created successfully/i)).toBeInTheDocument();
     });
 
-    // Simulate the timer expiration and ensure navigate was called
+    // Simulate timer expiration to test if navigation is triggered correctly
     act(() => {
       jest.runAllTimers(); 
     });

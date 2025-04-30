@@ -21,35 +21,44 @@ export function CreateAccount() {
     event.preventDefault();
     setErrors({});
     setSuccessMessage('');
-
+  
+    // Validate required fields
+    if (!formData.username || !formData.password) {
+      setErrors({
+        username: formData.username ? undefined : 'Username is required',
+        password: formData.password ? undefined : 'Password is required',
+      });
+      return; // Prevent submission if fields are missing
+    }
+  
     try {
       const response = await fetch('/api/create_account', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         setSuccessMessage(data.message || 'Account created successfully');
         setTimeout(() => navigate('/signup/account-selection'), 1000);
       } else {
         const errorList = Array.isArray(data.error) ? data.error : [data.error];
         const fieldErrors: { username?: string; password?: string } = {};
-
+  
         for (const msg of errorList) {
           if (msg.toLowerCase().includes('username')) fieldErrors.username = msg;
           if (msg.toLowerCase().includes('password')) fieldErrors.password = msg;
         }
-
+  
         setErrors(fieldErrors);
       }
     } catch (err) {
       console.error(err);
       setErrors({ username: 'Server error', password: 'Server error' });
     }
-  };
+  };  
 
   return (
     <div className="mx-auto px-6 py-14 max-w-xl">

@@ -66,7 +66,9 @@ After defining the UI, I made a checklist to guide implementation, based on the 
 - Password Validation:
   - 20–50 characters
   - Zxcvbn score ≥ 2
-  - Must include at least one letter and one number
+  - Must include at least one letter and one number*
+ 
+*One important clarification to note here is: the requirement of including at least one letter and one number has only been enforced for passwords, not usernames. Since the original specification was ambiguous, I followed the common convention that usernames typically do not require numeric characters. However, if the intention was to apply the same rule to usernames as well, the implementation would closely mirror that of the password validation.
 
 ## UX Considerations & Enhancements
 To ensure a smooth user experience, I implemented the following enhancements:
